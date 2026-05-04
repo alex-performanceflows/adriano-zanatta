@@ -57,6 +57,7 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 body {
@@ -68,6 +69,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: rgba(59,118,91,0.18);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Long words / URLs / italian compound words: break instead of overflowing */
+h1, h2, h3, h4, h5, p, li, a, span, dt, dd, label {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 img, picture, video, svg {
@@ -1591,11 +1602,16 @@ p { font-size: 1rem; line-height: 1.75; color: var(--ink-soft); }
   .burger { display: block; }
 
   .hero { padding-top: 7rem; min-height: auto; }
+  .hero-portrait {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
   .hero-badge {
     position: static;
-    margin-top: 1.5rem;
-    max-width: none;
-    display: inline-block;
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
   }
 
   .footer-grid {
@@ -1614,7 +1630,104 @@ p { font-size: 1rem; line-height: 1.75; color: var(--ink-soft); }
 }
 
 @media (max-width: 480px) {
+  :root { --gutter: 1.125rem; }
+
   .hero-cta-row { flex-direction: column; align-items: stretch; }
-  .hero-cta-row .btn { justify-content: center; }
+  .hero-cta-row .btn { justify-content: center; width: 100%; }
   .book-meta-row { gap: 1rem 1.5rem; }
+
+  /* Buttons can wrap if labels are long on tiny screens */
+  .btn { white-space: normal; line-height: 1.3; padding: 0.875rem 1.25rem; }
+
+  /* Reduce vertical padding on very small screens */
+  .section { padding: 3.5rem 0; }
+  .section-tight { padding: 2.5rem 0; }
+  .page-hero { padding: 7rem 0 2.5rem; }
+  .book-detail-hero { padding: 7rem 0 3rem; }
+
+  /* Hero typography tight */
+  .hero h1 { font-size: 2.75rem; }
+  .hero-bio { font-size: 1rem; }
+  .hero-subtitle { font-size: 0.75rem; letter-spacing: 0.24em; }
+  .hero-subtitle::before { width: 24px; }
+
+  /* Section headers */
+  .section-head { margin-bottom: 2.5rem; }
+
+  /* Forms */
+  .form-card { padding: 1.5rem 1.25rem; }
+  .form-segmented { flex-direction: column; padding: 0.25rem; }
+  .form-segmented label { padding: 0.75rem 0.5rem; font-size: 0.75rem; }
+
+  /* Book cards */
+  .book-card-body { padding: 1.5rem 1.25rem 1.75rem; }
+  .book-card-cover { padding: 1.75rem 1.5rem 0; }
+
+  /* Reviews on tiny screens */
+  .review { padding: 2rem 1.5rem; }
+  .review p { font-size: 1rem; }
+
+  /* Book detail */
+  .book-detail-info h1 { font-size: 2rem; }
+  .book-prize { font-size: 0.75rem; padding: 0.5rem 0.875rem; }
+  .book-3d { width: clamp(180px, 60vw, 280px) !important; }
+
+  /* Featured book section padding */
+  .featured-book h2 { font-size: 1.875rem; }
+
+  /* Press items full width on tiny */
+  .press-item { width: 100%; }
+
+  /* CTA banner padding tighter */
+  .cta-banner { padding: 2.5rem 1.25rem; margin: 0 var(--gutter); }
+  .cta-banner h2 { font-size: 1.75rem; }
+
+  /* Footer tighter */
+  .site-footer { padding: 3.5rem 0 1.5rem; }
+  .footer-grid { gap: 2.5rem; }
+
+  /* Crumbs wrap nicely */
+  .crumbs { font-size: 0.75rem; }
+
+  /* Prose drop cap smaller */
+  .prose p:first-of-type::first-letter { font-size: 3em; }
+
+  /* Contact card stack icon above text on very narrow */
+  .contact-card { gap: 1rem; padding: 1.5rem; }
+
+  /* Shop tabs tighter */
+  .book-shop-tab { padding: 0.5rem 1rem; font-size: 0.75rem; }
+}
+
+/* =========================================================
+   Shop page book section row — must stack on mobile
+   ========================================================= */
+.book-shop-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.book-shop-row .book-shop-cover {
+  display: block;
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.book-shop-row .book-shop-cover img {
+  width: 100%;
+  box-shadow: var(--shadow-book);
+  border-radius: 2px;
+}
+
+@media (max-width: 600px) {
+  .book-shop-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+    justify-items: center;
+  }
+  .book-shop-row .book-shop-cover { width: 110px; }
 }
